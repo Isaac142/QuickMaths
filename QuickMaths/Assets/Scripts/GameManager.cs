@@ -53,7 +53,8 @@ public class GameManager : MonoBehaviour
         if (numbers[2] == 0)
         {
             numbers[2] = Random.Range(1, 10);
-            numbersText[2].text = numbersText[2].ToString();
+            numbersText[2].text = numbers[2].ToString();
+            Debug.Log("Redid number");
         }
     }
 
