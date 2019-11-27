@@ -20,6 +20,8 @@ public class PlayerCameraMovement : MonoBehaviour
 
     private float rotationY = 0f;
 
+    public bool canMove;
+
     //Calling upon the Rigidbody, and freezing their rotations.
     void Start()
     {
@@ -27,29 +29,35 @@ public class PlayerCameraMovement : MonoBehaviour
         {
             GetComponent<Rigidbody>().freezeRotation = true;
         }
+
+        canMove = true;
     }
 
     void Update()
     {
-        if (axes == RotationAxes.MouseXAndY)
-        {
-            float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensX;
 
-            rotationY += Input.GetAxis("Mouse Y") * sensY;
-            rotationY = Mathf.Clamp(rotationY, minY, maxY);
-
-            transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
-        }
-        else if (axes == RotationAxes.MouseX)
+        if(canMove)
         {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensX, 0);
-        }
-        else
-        {
-            rotationY += Input.GetAxis("Mouse Y") * sensY;
-            rotationY = Mathf.Clamp(rotationY, minY, maxY);
+            if (axes == RotationAxes.MouseXAndY)
+            {
+                float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensX;
 
-            transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+                rotationY += Input.GetAxis("Mouse Y") * sensY;
+                rotationY = Mathf.Clamp(rotationY, minY, maxY);
+
+                transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+            }
+            else if (axes == RotationAxes.MouseX)
+            {
+                transform.Rotate(0, Input.GetAxis("Mouse X") * sensX, 0);
+            }
+            else
+            {
+                rotationY += Input.GetAxis("Mouse Y") * sensY;
+                rotationY = Mathf.Clamp(rotationY, minY, maxY);
+
+                transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+            }
         }
     }
 }
