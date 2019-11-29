@@ -9,7 +9,7 @@ public class Interaction : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = false;
+
     }
     // Update is called once per frame
     void Update()

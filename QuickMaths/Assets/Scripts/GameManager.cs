@@ -32,13 +32,26 @@ public class GameManager : MonoBehaviour
 
     public PlayerCameraMovement PCMX, PCMY;
 
+    public GameObject youWin;
+    public Text winText;
+
+    public GameObject youLost;
+    public Text lostText;
+
+    public GameObject inGameHud;
+
     // Start is called before the first frame update
     void Start()
     {
         //timer = roundLength;
 
+        Cursor.visible = false;
+
         timer = 0.1f;
-        scoreText.text = "Score: " + score.ToString();
+        SetScoreText();
+        levelText.text = "Level: " + level.ToString();
+
+        Time.timeScale = 1f;
 
         //PCM = GetComponent<PlayerCameraMovement>();
 
@@ -91,6 +104,11 @@ public class GameManager : MonoBehaviour
             //{
             //    obj.GetComponent<Renderer>().material.color = Color.white;
             //}
+
+        //if(youWin)
+        //    {
+        //        Time.timeScale = 0f;
+        //    }
         }
     }
 
@@ -135,22 +153,26 @@ public class GameManager : MonoBehaviour
             Debug.Log("Correct");
             rend.material.color = Color.green;
             score += 2 * timer;
-            scoreText.text = "Score: " + score.ToString("0");
+            SetScoreText();
             level += 1;
             levelText.text = "Level: " + level.ToString();
         }
         else
         {
+
             Debug.Log("Wrong");
+            Time.timeScale = 0f;
             rend.material.color = Color.red;
             score -= 15;
-            scoreText.text = "Score: " + score.ToString("0");
-            Time.timeScale = 0f;
+            SetScoreText();
             PCMY.canMove = false;
             PCMX.canMove = false;
+            youLost.SetActive(true);
+            inGameHud.SetActive(false);
+            Cursor.visible = true;
         }
 
-        timer = 0.3f;
+        timer = 0.1f;
 
         if(score >= 0)
         {
@@ -160,5 +182,27 @@ public class GameManager : MonoBehaviour
         {
             scoreText.color = Color.black;
         }
+
+        if(level > 5)
+        {
+            Debug.Log("You Win!");
+            Time.timeScale = 0f;
+            PCMY.canMove = false;
+            PCMX.canMove = false;
+            youWin.SetActive(true);
+            inGameHud.SetActive(false);
+            Cursor.visible = true;
+        }
+        else
+        {
+            youWin.SetActive(false);
+        }
+    }
+
+    void SetScoreText()
+    {
+        scoreText.text = "Score: " + score.ToString("0");
+        winText.text = "Your Final Score: " + score.ToString("0");
+        lostText.text = "Your Final Score: " + score.ToString("0");
     }
 }
